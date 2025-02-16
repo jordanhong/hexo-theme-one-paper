@@ -173,7 +173,7 @@ a
 .read-more
 {
     padding: 0 4px;
-    color: var(--font-color-0);   
+    color: var(--font-color-0);
 }
 .read-more:before,
 .read-more:after
@@ -334,8 +334,12 @@ a
 }
 .archive-main
 {
-    flex: 0 1 calc( 100% - 108px );
+    flex: 0 1 calc(100% - 108px);
+    padding: 1px 10px; /* Non-zero padding on left and right */
+    box-sizing: border-box; /* Ensures padding is included in width calculation */
+    border-radius: 8px;
 }
+
 .archive-title
 {
     color: var(--font-color-1);
@@ -364,7 +368,7 @@ a
 .tag-link {
     background-color: #eee;
     margin: 5px;
-    padding: 5px 7px;
+    padding: 5px 8px;
     border-radius: 3px;
     text-decoration: none;
     color: #333;
