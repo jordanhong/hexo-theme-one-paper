@@ -1,8 +1,25 @@
+<!--
+Normally, the arrow takes you to the previous page. 
+In the corner case where there is no previous page (e.g. when this post is the first entry), 
+the arrow takes you back to home. 
+-->
 <div class="post-header">
     <a class="logo" href="<%- url_for() %>"><%= config.title %></a>
-    <a class="go-home" href="<%- url_for() %>">
+    <!-- <a class="go-home" href="<%- url_for() %>"> -->
+    <!-- <a class="go-back" href="javascript:history.back(-1)"> -->
+    <a class="go-back" href="javascript:void(0);" onclick="goBackOrGoHome()">
         <svg width="8" height="14" viewBox="0 0 8 14">
             <path d="M7 1L1 7l6 6" stroke="#000" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
     </a>
 </div>
+
+<script>
+function goBackOrGoHome() {
+    if (document.referrer && document.referrer.includes(location.host)) {
+        history.back();
+    } else {
+        window.location.href = "/";
+    }
+}
+</script>
