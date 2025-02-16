@@ -346,3 +346,32 @@ a
     color: var(--font-color-0);
     transition: color ease-in-out .5s;
 }
+
+.archive-info {
+    font-size: 0.875rem;
+    /* margin-left: auto; /1* Pushes tags to the right *1/ */
+    float: right;
+    text-align: right;
+}
+
+/* Master tag list in archive page */
+.tag-list-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+/* Individual tag links*/
+.tag-link {
+    background-color: #eee;
+    margin: 5px;
+    padding: 5px 7px;
+    border-radius: 3px;
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+    transition: background 0.3s ease;
+}
+.tag-link:hover {
+    color: var(--font-color-0);
+    transition: color ease-in-out .5s;
+}

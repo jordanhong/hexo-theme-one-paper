@@ -1,14 +1,83 @@
-<div class="archive-list">
-    <ul class="archive">
-        <% page.posts.each(function (post) { %>
+<!-- Archive page -->
+<!-- 1) Sort through all posts by descending date. Create two-dimensional lists: by year, then by month. -->
+<!-- 2) Show a list of available tags at the bottom. -->
+<%
+    var lastYear,
+        lastMonth,
+        currentYear,
+        currentMonth;
+%>
+
+<section class="archive-list">
+    <!-- Iterate through posts by data -->
+    <% page.posts.sort((a, b) => b.date - a.date).each(function (post) { %>
+        <%
+            currentYear = post.date.year();
+            currentMonth = post.date.format('MM');
+            /* Fetch a list of associated tags with this post */
+            let tagLinks = post.tags && post.tags.length > 0
+                ? post.tags.map(tag => `<a href="${url_for(tag.path)}">${tag.name}</a>`).join(", ")
+                : "";
+        %>
+
+        <% if (currentYear !== lastYear) { %>
+            <% if (lastYear !== null) { %>
+                <% lastMonth = null; %>
+                <!-- Closes previous year list and starts a new year list -->
+                </section>  
+                <section class="archive-list">
+            <% } %>
+            <h3 class="archive-year">
+                <a class="archive-sub" href="<%- url_for('archives/' + currentYear) %>">
+                    <%= currentYear %>
+                </a>
+            </h3>
+            <% lastYear = currentYear; %>
+        <% } %>
+
+        <% if (currentMonth !== lastMonth) { %>
+            <% if (lastMonth !== null) { %>
+                <!-- Closes previous month list and starts a new month list -->
+                </ul>
+            <% } %>
+            <h4 class="archive-month">
+                <a class="archive-sub" href="<%- url_for('archives/' + post.date.format('YYYY/MM')) %>">
+                    <%= currentMonth %>月
+                </a>
+            </h4>
+            <% lastMonth = currentMonth; %>
+            <ul class="archive timeline">
+        <% } %>
+
+
         <li>
-            <span class="archive-date"><%= date(post.date, "YYYY.MM.DD") %></span>
+            <span class="archive-date">
+                <%= date(post.date, "YY.MM.DD") %>
+            </span>
             <div class="archive-main">
-                <a class="archive-title" href="<%- url_for(post.path) %>"><%= post.title %></a>
-                <!-- <a class="read-more" href="<%- url_for(post.path) %>"> ... </a> -->
+                <a class="archive-title" href="<%- url_for(post.path) %>"> <%= post.title %> </a>
+                <% if (post.tags.length > 0) { %>
+                    <div class="archive-info">
+                        tags: <%- tagLinks %>
+                    </div>
+                <% } %>
             </div>
         </li>
-        <% }) %>
-    </ul>
-</div>
+    <% }) %>
+    </ul> <!-- End the last list -->
+</section>
+
 <%- partial('_partial/paginator') %>
+
+<!-- Show all available tags -->
+<section class="tag-list">
+    <h3 class="tag-list-title">Tags</h3>
+    <div class="tag-container">
+        <% site.tags.each(function (tag) { %>
+            <a href="<%- url_for(tag.path) %>" class="tag-link">
+                <%= tag.name %>
+            </a>
+        <% }) %>
+    </div>
+</section>
+

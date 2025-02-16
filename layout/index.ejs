@@ -1,3 +1,4 @@
+<!-- In the main page, the post entries have data and tags at the end. -->
 <div class="post-list">
     <% page.posts.each(function (post) { %>
     <div class="post">
@@ -5,8 +6,17 @@
         <div class="post-except">
             <%- strip_html(post.content).substr(0, 240) %>
             <a class="read-more" href="<%- url_for(post.path) %>"> ... </a>
+            <br>
+            <span class="post-date">
+                <%- date(post.date, "YYYY.MM.DD") %>
+                <% if (post.tags && post.tags.length > 0) { %>
+                    | 
+                    <% post.tags.each(function(tag, index) { %>
+                        <a class="post-date" href="<%- url_for(tag.path) %>"><%= tag.name %></a><% if (index < post.tags.length - 1) { %>, <% } %>
+                    <% }) %>
+                <% } %>
+            </span>
         </div>
-        <div class="post-date"><%- date(post.date, "YYYY.MM.DD") %></div>
     </div>
     <% }) %>
 </div>
