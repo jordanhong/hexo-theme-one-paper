@@ -1,0 +1,54 @@
+<% let posts = [] %>
+<% site.tags.data.forEach(tag => { %>
+    <% if (is_tag(tag.name)) { %>
+        <%
+            posts = tag.posts;
+            posts.data.sort((a, b) => b.date - a.date);
+        %>
+    <% } %>
+<% }) %>
+
+<% if (!posts.length) { %>
+    <div class="cat-box">
+        <div class="cat-title">Tags：</div>
+        <div class="cat-list">
+            <% site.tags.each(function(tag) { %>
+                <div class="btn-box">
+                    <a href="<%- url_for(tag.path) %>" class="cat-btn"><%= tag.name %></a>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+
+<% } else { %>
+    <% let page_tag = null; %>
+    <% posts.data[0].tags.data.forEach(this_tag => { %>
+        <% if (is_tag(this_tag.name)) { %>
+            <% page_tag = this_tag; %>
+        <% } %>
+    <% }) %>
+
+    <section class="archive-list">
+        <ul class="archive">
+            <span class="archive-sub-type">
+                <i class="fa fa-genderless"></i>
+                <%= page_tag ? page_tag.name : "Unknown Tag" %>
+            </span>
+            <% posts.forEach(function(post) { %>
+                <%
+                    let tagLinks = post.tags.map(tag => 
+                        `<a href="${url_for(tag.path)}">${tag.name}</a>`).join(", ");
+                %>
+                <li>
+                    <span class="archive-date"><%= date(post.date, "YY.MM.DD") %></span>
+                    <div class="archive-main">
+                        <a class="archive-title" href="<%- url_for(post.path) %>"><%= post.title %></a>
+                        <div class="archive-info">tags: <%- tagLinks %></div>
+                   </div>
+               </li>
+            <% }) %>
+        </ul>
+    </section>
+
+    <%- partial('_partial/paginator') %>
+<% } %>
